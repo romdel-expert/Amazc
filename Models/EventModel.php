@@ -2,6 +2,11 @@
 
 namespace Models;
 
+use Models\DataManager;
+
+
+require_once ROOT . "/Models/DataManager.php";
+
 class EventModel extends Database{
     
 

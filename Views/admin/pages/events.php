@@ -45,11 +45,11 @@
                                     <?php 
                                 if ($activity["is_active"] == true) { ?>
 
-                                    <button type="submit" class="text-primary">
+                                    <button type="submit" class="text-primary btn-swip">
                                         <i class="bi bi-toggle2-on"></i>
                                     </button>
                                     <?php  } else {?>
-                                    <button type="submit" class="text-dark">
+                                    <button type="submit" class="text-dark btn-swip">
                                         <i class="bi bi-toggle2-off"></i>
                                     </button>
                                     <?php  }
