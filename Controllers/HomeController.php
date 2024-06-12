@@ -2,20 +2,24 @@
 namespace Controllers;
 
 use Models\EventModel;
+use Models\DomainModel;
 use Models\ImageModel;
 
 require ROOT . "/Models/EventModel.php";
+require ROOT . "/Models/DomainModel.php";
 require ROOT . "/Models/ImageModel.php";
 
 class HomeController{
 
     private $eventModel;
+    private $domainModel;
     private $imageModel;
 
     public function __construct()
     {
         $this->eventModel = new EventModel();
         $this->imageModel = new ImageModel();
+        $this->domainModel = new DomainModel();
     }
     
     /**
@@ -28,6 +32,7 @@ class HomeController{
         $title = "Accueil Association Michel-Archange";
         $page = 1;
         $listActivities = $this->setListActivities($this->eventModel->findAll($page));
+        $listDomains = $this->setListDomains($this->domainModel->findAll($page));
         require(ROOT ."/Views/home.php");
     }
 
@@ -68,10 +73,12 @@ class HomeController{
 
 
         foreach ($listActivities as $activity) {
-            $nawList[] = $this->setActivity($activity);
+            if ($activity["is_active"] == 1) {
+                $newList[] = $this->setActivity($activity);
+            }
         }
 
-        return $nawList;
+        return $newList;
     }
 
 
@@ -95,5 +102,60 @@ class HomeController{
         $activity["image"] = $this->imageModel->findImageByActivity($activity["id"]);
         
         return $activity;
+    }
+
+
+
+
+    /**
+     * Cette methode sert effectuer la structuration des données des domaines d'activité
+     * il s'agit de mettre lesdonnées attachées au domain afin d'avoir un tableau
+     * complet pour faciliter l'affichage
+     * 
+     * Cette methode attend comme parametre ou valeurs d'entree un tableau de domaines et
+     * retourne le nouveau tableau de domaines sous forme de array 
+     *
+     * @param array $listDomains
+     * @return array
+     */
+    private function setListDomains(array $listDomains):array{
+        
+        $newList = [];
+
+        if (!$listDomains) {
+            return [];
+        }
+
+
+        foreach ($listDomains as $domain) {
+            if ($domain["is_active"] == 1) {
+                $newList[] = $this->setDomain($domain);
+            }
+        }
+
+        return $newList;
+    }
+
+
+
+
+    /**
+     * Cette fonction sert à effectuer la structuration des données afin de rendre une 
+     * activité compléte c'est à dire de recupérer toutes les données attachée à une activités
+     * 
+     * afin de construire un tablea ou un objet complet
+     *
+     * @param array $domain
+     * @return array
+     */
+    private function setDomain(array $domain):array{
+        
+        if (!$domain) {
+            return [];
+        }
+
+        $domain["image"] = $this->imageModel->findImageByDomain($domain["id"]);
+        
+        return $domain;
     }
 }

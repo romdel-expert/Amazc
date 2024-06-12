@@ -4,22 +4,26 @@ namespace Controllers;
 
 use Models\DataManager;
 use Models\EventModel;
+use Models\DomainModel;
 use Models\ImageModel;
 
 require ROOT . "/Models/ImageModel.php";
 require ROOT . "/Models/DataManager.php";
 require ROOT . "/Models/EventModel.php";
+require ROOT . "/Models/DomainModel.php";
 
 class AdminController{
 
     private $imageModel;
     private $eventModel;
+    private $domainModel;
 
 
     public function __construct()
     {
         $this->imageModel = new ImageModel();
         $this->eventModel = new EventModel();
+        $this->domainModel = new DomainModel();
     }
     
     
@@ -58,6 +62,38 @@ class AdminController{
         }
         
         require(ROOT . "/Views/admin/pages/form-event.php");
+    }
+
+
+    /**
+     * Cette mthode sert à afficher le formulaire permettant d'enregistrer un nouveau domaine d'intervention
+     * On verifie d'abord que la session de l'administrateur est en cours, sion on le renvoie 
+     * vers la page de connexion
+     *
+     * @return void
+     */
+    public function formDomain(){
+        
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+            exit();
+        }
+
+        $msgDomainError = "";
+        $titleDomain = "";
+        $description = "";
+        
+        if (isset($_POST["title"])) {
+            $titleEvent = $_POST["title"];
+        }
+
+        if (isset($_POST["description"])) {
+            $description  = $_POST["description"];
+        }
+        
+        require(ROOT . "/Views/admin/pages/form-domain.php");
     }
 
 
@@ -106,8 +142,52 @@ class AdminController{
 
 
     /**
-     * Cette mthode sert à afficher la page qui présente la liste des évenement realisés 
+     * Cette mthode sert à afficher le formulaire permettant d'enregistrer la mise à jour 
+     * d'un domain d'intervention existant
      * On verifie d'abord que la session de l'administrateur est en cours, sion on le renvoie 
+     * vers la page de connexion
+     *
+     * @return void
+     */
+    public function formDomainUpd(){
+        
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+            exit();
+        }
+
+        
+        if (empty($_POST)) {
+            $msgDomainError = "Le domaine d'intervention que vous souhaitez modifier n'est pas identifiée";
+            $class = "alert-danger";
+            $page = 1;
+            $listDomains = $this->setListDomains($this->domainModel->findAll($page));
+            require(ROOT . "/Views/admin/pages/domains.php");
+            exit();
+        }
+        
+        $domain = $this->domainModel->findDomainById($_POST["id"]);
+        
+        if (!$domain) {
+            $msgDomainError = "Aucun domaine d'intervention ne correspond à cet identifiant";
+            $class = "alert-danger";
+            $page = 1;
+            $listDomains = $this->setListDomains($this->domainModel->findAll($page));
+            require(ROOT . "/Views/admin/pages/domains.php");
+            exit();
+        }
+        
+        $msgDomainError = "";    
+        $domain = $this->setDomain($domain);
+        require(ROOT . "/Views/admin/pages/form-upd-domain.php");
+    }
+
+
+    /**
+     * Cette mthode sert à afficher la page qui présente la liste des évenement realisés 
+     * On verifie d'abord que la session de l'administrateur est en cours, si on le renvoie 
      * vers la page de connexion
      *
      * @return void
@@ -125,6 +205,29 @@ class AdminController{
         $msgEventError = "";
         $listActivities = $this->setListActivities($this->eventModel->findAll($page));
         require(ROOT . "/Views/admin/pages/events.php");
+    }
+
+
+    /**
+     * Cette mthode sert à afficher la page qui présente la liste des domaines d'intervention 
+     * On verifie d'abord que la session de l'administrateur est en cours, si on le renvoie 
+     * vers la page de connexion
+     *
+     * @return void
+     */
+    public function domains(){
+        
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+            exit();
+        }
+
+        $page = 1;
+        $msgDomainError = "";
+        $listDomains = $this->setListDomains($this->domainModel->findAll($page));
+        require(ROOT . "/Views/admin/pages/domains.php");
     }
     
 
@@ -182,7 +285,7 @@ class AdminController{
 
         /**
          * On teste s'il y a une activité qui existe déjà avec les mêmes titre, description 
-         * et original nom d'image pour éviter deux choses
+         * et nom d'image pour éviter deux choses
          * 
          * D'abord pour eviter que le formulaire soit renvoyer suite au refresh de la page
          * puis pour eviter que l'utilisateur s'amuse à enregistrer des activités identiques
@@ -207,6 +310,7 @@ class AdminController{
             $loadFile["title"] = $_POST["title"];
             $loadFile["description"] = $_POST["description"];
             $loadFile["idActivity"] = $activity["id"];
+            $loadFile["mode"] = "activity";
             
             $photo = $this->imageModel->createImage($loadFile);
             if (!$photo) {
@@ -221,6 +325,103 @@ class AdminController{
 
             
         $this->events();
+    }
+    
+
+    /**
+     * Cette fonction sert à recupérer toutes les informations concernant un domaine d'intervention 
+     * organisé, charger la photo, la stoker dans un repertoire l'enregistrer dans la 
+     * base de données elle enregistre egalement les autres information dans la base 
+     * de données
+     * 
+     * On teste l'exitance de la session de ladministrateur si tel n'est pas le cas
+     * on le redirige vers la page de connexion'
+     *
+     * @return void
+     */
+    public function saveDomain(){
+        
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+        }
+
+        
+        /**
+         * On teste le tableau contenant les informations concernant le domaine d'intervention 
+         */
+        if(empty($_POST)){
+            
+            $msgDomainError = "Aucune information sur le domaine d'intervention n'est retrouvée";
+            $titleDomain = "";
+            $description = "";
+            require(ROOT . "/Views/admin/pages/form-domain.php");
+            exit();
+        }
+
+        if (!isset($_POST["title"]) || !isset($_POST["description"])) {
+            $msgDomainError = "Le titre et/ou la description du domained'intervention  ne sont pas renseignés";
+            $titleDomain = "";
+            $description = "";
+            require(ROOT . "/Views/admin/pages/form-domain.php");
+            exit();
+        }
+
+        $nameStoreed = "";
+            
+        $loadFile = $this->loadFile("domain", $nameStoreed);
+        
+        if ($loadFile["message"]) {
+            $msgDomainError = $loadFile["message"];
+            $titleDomain = $_POST["title"];
+            $description = $_POST["description"];
+            require(ROOT . "/Views/admin/pages/form-domain.php");
+            exit();
+        }
+
+        /**
+         * On teste s'il y a un domaine qui existe déjà avec les mêmes titre, description 
+         * et nom d'image pour éviter deux choses
+         * 
+         * D'abord pour eviter que le formulaire soit renvoyer suite au refresh de la page
+         * puis pour eviter que l'utilisateur s'amuse à enregistrer des domaine identiques
+         */
+        $existingDomain = $this->domainModel->findDomainByTitleDescriptionAndOriginalImageName(
+            $_POST["title"],
+            $_POST["description"],
+            $loadFile["originalName"]
+        );
+        
+        if (!$existingDomain) {
+            
+            $domain = $this->domainModel->createDomain($_POST);
+            if (!$domain) {
+                $msgDomainError = "Le domaine d'intervention n'a pas été enregistré";
+                $titleEvent = $_POST["title"];
+                $description = $_POST["description"];
+                require(ROOT . "/Views/admin/pages/form-domain.php");
+                exit();
+            }
+
+            $loadFile["title"] = $_POST["title"];
+            $loadFile["description"] = $_POST["description"];
+            $loadFile["idDomain"] = $domain["id"];
+            $loadFile["mode"] = "domain";
+            
+            $photo = $this->imageModel->createImage($loadFile);
+            if (!$photo) {
+                $msgDomainError = "Suite à un problème interne, la photo a été chargé mais non enregistrée";
+                $titleDomain = $_POST["title"];
+                $description = $_POST["description"];
+                require(ROOT . "/Views/admin/pages/form-domain.php");
+                exit();
+            }
+        }
+
+
+            
+        $this->domains();
     }
     
 
@@ -325,6 +526,7 @@ class AdminController{
             $loadFile["title"] = $_POST["title"];
             $loadFile["description"] = $_POST["description"];
             $loadFile["idActivity"] = $newActivity["id"];
+            $loadFile["mode"] = "activity";
             
             $photo = $this->imageModel->updateImage($loadFile);
             if (!$photo) {
@@ -338,6 +540,124 @@ class AdminController{
 
             
         $this->events();
+    }
+    
+
+    /**
+     * Cette fonction sert à recupérer toutes les informations concernant un domaine  
+     * d'intervention, charger la photo, la stoker dans un repertoire l'enregistrer dans la 
+     * base de données elle enregistre egalement les autres information dans la base 
+     * de données
+     * 
+     * On teste l'exitance de la session de ladministrateur si tel n'est pas le cas
+     * on le redirige vers la page de connexion'
+     *
+     * @return void
+     */
+    public function updateDomain(){
+        
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+        }
+
+        
+        /**
+         * On teste le tableau contenant les informations concernant le domaine d'intervention 
+         */
+        if(empty($_POST)){
+            
+            $msgDomainError = "Aucune information sur le domaine d'intervention n'est retrouvée";
+            $domain = array(
+                "id" => 0,
+                "title" => "",
+                "description" => "",
+                "image" => null
+            );
+            require(ROOT . "/Views/admin/pages/form-upd-domain.php");
+            exit();
+        }
+
+        $domain = array(
+            "id" => $_POST["id"],
+            "title" => $_POST["title"],
+            "description" => $_POST["description"],
+            "image" => null
+        );
+
+        if (!isset($_POST["id"])) {
+            $domain["id"] = 0;
+        }
+
+        if (!isset($_POST["title"])) {
+            $domain["title"] = "";
+        }
+
+        if (!isset($_POST["description"])) {
+            $domain["description"] = "";
+        }
+        
+        if (!isset($_POST["id"]) || !isset($_POST["title"]) || !isset($_POST["description"])) {
+            $msgDomainError = "Le titre et/ou la description du domaine d'intervention ne sont pas renseignés ou le domaine n'est pas identifié";
+            
+            require(ROOT . "/Views/admin/pages/form-upd-domain.php");
+            exit();
+        }
+
+
+
+        $existingDomain = $this->domainModel->findDomainById($_POST["id"]);
+        if (!$existingDomain) {
+            $msgDomainError = "Aucun domain ne correspond à l'id";
+            
+            require(ROOT . "/Views/admin/pages/form-upd-domain.php");
+            exit();
+        }
+
+        
+        
+
+        $newDomain = $this->domainModel->updateDomain($_POST);
+        if (!$newDomain) {
+            $msgDomainError = "Le domaine d'intervention n'a pas été modifié";
+            
+            require(ROOT . "/Views/admin/pages/form-upd-domain.php");
+            exit();
+        }
+
+        
+        
+        if ($_FILES["file_event"]["tmp_name"]) {
+
+            $nameStored = $this->imageModel->findImageByDomain($_POST["id"])["name"];
+            
+            $loadFile = $this->loadFile("domain", $nameStored);
+        
+            if ($loadFile["message"]) {
+                $msgDomainError = $loadFile["message"];
+                
+                require(ROOT . "/Views/admin/pages/form-upd-domain.php");
+                exit();
+            }
+
+            $loadFile["title"] = $_POST["title"];
+            $loadFile["description"] = $_POST["description"];
+            $loadFile["idDomain"] = $newDomain["id"];
+            $loadFile["mode"] = "domain";
+            
+            $photo = $this->imageModel->updateImage($loadFile);
+            if (!$photo) {
+                $msgDomainError = "Suite à un problème interne, la photo a été chargé mais non enregistrée";
+                $domain = $newActivity;
+                require(ROOT . "/Views/admin/pages/form-upd-domain.php");
+                exit();
+            }
+        }
+
+
+            
+        $this->domains();
     }
 
 
@@ -391,7 +711,7 @@ class AdminController{
         
         if(!$activity){
             
-            $msgEventError = "Aucune activité ne correspondà l'id fourni ";
+            $msgEventError = "Aucune activité ne correspond à l'id fourni ";
             $class = "alert-danger";
             $page = 1;
             $listActivities = $this->setListActivities($this->eventModel->findAll($page));
@@ -426,15 +746,90 @@ class AdminController{
         require(ROOT . "/Views/admin/pages/events.php");
     }
 
-    public function domains(){
-        $title = "Domaine d'activité";
-        require ROOT."/Views/admin/pages/domains.php";
-    }
 
 
-    public function addDomain(){
-        $title = "Formulaire de nouveau domaine d'activité";
-        require ROOT."/Views/admin/pages/new-domain.php";
+
+    /**
+     * Cette methode sert à mettre à jour un domaine d'activité en la déclarant active ou inactive
+     * Active: le domaine s'affiche sur le site
+     * inactive : le domaine ne s'affiche pas sur le site
+     * 
+     * sauf l'administrateur peut consulter un domaine d'intervention qui n'est pas en état active
+     *
+     * @return void
+     */
+    public function setActiveDomain(){
+        
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+        }
+
+        
+        /**
+         * On teste le tableau contenant les informations concernant le domaine 
+         */
+        if(empty($_POST)){
+            
+            $msgDomainError = "Aucune information sur le domaine n'est retrouvée";
+            $class = "alert-danger";
+            $page = 1;
+            $listDomains = $this->setListDomains($this->domainModel->findAll($page));
+            require(ROOT . "/Views/admin/pages/domains.php");
+            exit();
+        }
+
+
+        if(!isset($_POST["id"])){
+            
+            $msgDomainError = "Le domain d'intervention n'est pas identifié";
+            $class = "alert-danger";
+            $page = 1;
+            $listDomains = $this->setListDomains($this->domainModel->findAll($page));
+            require(ROOT . "/Views/admin/pages/domains.php");
+            exit();
+        }
+
+        $id = $_POST["id"];
+        
+        $activity = $this->domainModel->findDomainById($id);
+        
+        if(!$activity){
+            
+            $msgDomainError = "Aucun domain ne correspond à l'id fourni ";
+            $class = "alert-danger";
+            $page = 1;
+            $listDomains = $this->setListDomains($this->domainModel->findAll($page));
+            require(ROOT . "/Views/admin/pages/domains.php");
+            exit();
+        }
+
+
+        $isActive = $activity["is_active"];
+        if ($isActive == 0) {
+            $isActive = 1;
+        }elseif ($isActive == 1) {
+            $isActive = 0;
+        }
+            
+        $newActivity = $this->domainModel->setActiveDomain($id, $isActive);
+        if (!$newActivity) {
+            $msgDomainError = "Le domaine n'a pas été mis à jour";
+            $class = "alert-danger";
+            $page = 1;
+            $listDomains = $this->setListDomains($this->domainModel->findAll($page));
+            require(ROOT . "/Views/admin/pages/domains.php");
+            exit();
+        }
+
+
+        
+        $msgDomainError = "Le domaine a été mis à jour avec succès";
+        $class = "alert-success";
+        $page = 1;
+        $listDomains = $this->setListDomains($this->domainModel->findAll($page));
+        require(ROOT . "/Views/admin/pages/domains.php");
     }
 
 
@@ -667,10 +1062,10 @@ class AdminController{
 
 
         foreach ($listActivities as $activity) {
-            $nawList[] = $this->setActivity($activity);
+            $newList[] = $this->setActivity($activity);
         }
 
-        return $nawList;
+        return $newList;
     }
 
 
@@ -694,5 +1089,58 @@ class AdminController{
         $activity["image"] = $this->imageModel->findImageByActivity($activity["id"]);
         
         return $activity;
+    }
+
+
+
+
+    /**
+     * Cette methode sert effectuer la structuration des données des domaines d'activité
+     * il s'agit de mettre lesdonnées attachées au domain afin d'avoir un tableau
+     * complet pour faciliter l'affichage
+     * 
+     * Cette methode attend comme parametre ou valeurs d'entree un tableau de domaines et
+     * retourne le nouveau tableau de domaines sous forme de array 
+     *
+     * @param array $listDomains
+     * @return array
+     */
+    private function setListDomains(array $listDomains):array{
+        
+        $newList = [];
+
+        if (!$listDomains) {
+            return [];
+        }
+
+
+        foreach ($listDomains as $domain) {
+            $newList[] = $this->setDomain($domain);
+        }
+
+        return $newList;
+    }
+
+
+
+
+    /**
+     * Cette fonction sert à effectuer la structuration des données afin de rendre une 
+     * activité compléte c'est à dire de recupérer toutes les données attachée à une activités
+     * 
+     * afin de construire un tablea ou un objet complet
+     *
+     * @param array $domain
+     * @return array
+     */
+    private function setDomain(array $domain):array{
+        
+        if (!$domain) {
+            return [];
+        }
+
+        $domain["image"] = $this->imageModel->findImageByDomain($domain["id"]);
+        
+        return $domain;
     }
 }

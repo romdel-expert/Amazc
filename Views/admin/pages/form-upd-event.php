@@ -64,6 +64,6 @@
 <?php
 $content = ob_get_clean();
 
-$title = "Formulaire d'enregistrerment d'un nouvel événement asisté par association michel archange zero chomage";
+$title = "Formulaire d'enregistrerment de mise à jour d'activité asistés par association michel archange zero chomage";
 require(ROOT . "/Views/template-admin.php");
 ?>

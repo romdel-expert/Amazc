@@ -7,7 +7,7 @@ use Models\DataManager;
 
 require_once ROOT . "/Models/DataManager.php";
 
-class EventModel extends Database{
+class DomainModel extends Database{
     
 
     public function __construct()
@@ -21,24 +21,24 @@ class EventModel extends Database{
 
 
     /**
-     * Cette methode sert à enregistrer une nouvelle activité dans la base de données.
+     * Cette methode sert à enregistrer un nouveau domaine d'activité dans la base de données.
      * Elle attend comme paramètre d'entrée un tableau contenant les informations à 
-     * enregistrer. Elle retourne un tableau qui est soit vide ou la nouvelle activité
+     * enregistrer. Elle retourne un tableau qui est soit vide ou la nouveau domaine
      * qui vient d'etre enregistrée
      * 
      * On recupere la nouvelle activité enregistrée en faisont appel à la methode
-     * findActivityById en utilisant le dernier id inserver dans la table Donation
+     * findDomainById en utilisant le dernier id inserver dans la table Donation
      *
      * @param array $params
      * @return array
      */
-    public function createActivity(array $params):array{
+    public function createDomain(array $params):array{
         
         if (!$params || empty($params)) {
             return [];
         }
         
-        $request = $this->db->prepare("INSERT INTO `activity`(`title`, `description`) 
+        $request = $this->db->prepare("INSERT INTO `domain`(`title`, `description`) 
                                             VALUES (:title,:description1)");
 
 		if (!$request) {
@@ -57,7 +57,7 @@ class EventModel extends Database{
 			return [];
 		} 
 
-        return $this->findActivityById($lastId);
+        return $this->findDomainById($lastId);
     }
 
 
@@ -66,24 +66,24 @@ class EventModel extends Database{
 
 
     /**
-     * Cette methode sert à enregistrer une mise à jour d'activité dans la base de données.
+     * Cette methode sert à enregistrer une mise à jour de domaine d'activité dans la base de données.
      * Elle attend comme paramètre d'entrée un tableau contenant les informations à 
-     * enregistrer. Elle retourne un tableau qui est soit vide ou la nouvelle activité
-     * qui vient d'etre enregistrée
+     * enregistrer. Elle retourne un tableau qui est soit vide ou le nouveau domaine d'activité
+     * qui vient d'etre enregistré
      * 
-     * On recupere la nouvelle activité enregistrée en faisont appel à la methode
-     * findActivityById en utilisant le dernier id inserver dans la table activity
+     * On recupere le nouveau domaine d'actité enregistré en faisont appel à la methode
+     * findDomainById en utilisant le dernier id inserer dans la table domain
      *
      * @param array $params
      * @return array
      */
-    public function updateActivity(array $params):array{
+    public function updateDomain(array $params):array{
         
         if (!$params || empty($params)) {
             return [];
         }
         
-        $request = $this->db->prepare("UPDATE `activity` 
+        $request = $this->db->prepare("UPDATE `domain` 
                                         SET `title`=:title,`description`=:description1,`updated_at`=:updated_at 
                                         WHERE `id`=:id");
 
@@ -104,33 +104,33 @@ class EventModel extends Database{
 			return [];
 		} 
 
-        return $this->findActivityById($params["id"]);
+        return $this->findDomainById($params["id"]);
     }
 
 
 
 
     /**
-     * Cette methode sert à enregistrer une mise à jour d'activité dans la base de données.
-     * Elle attend comme paramètre d'entrée l'id de l'activité et le nouveau statut de l'activité. 
+     * Cette methode sert à enregistrer une mise à jour de domaine d'intervention dans la base de données.
+     * Elle attend comme paramètre d'entrée l'id du domaine et le nouveau statut du domaine d'intervention. 
      * Elle retourne un tableau qui est soit vide ou la nouvelle activité
-     * qui vient d'etre enregistrée
+     * qui vient d'etre enregistré
      * 
-     * On recupere la nouvelle activité enregistrée en faisont appel à la methode
-     * findActivityById en utilisant le dernier id inserver dans la table activity
+     * On recupere le nouveau domaine d'intervention enregistré en faisont appel à la methode
+     * findDoamineById en utilisant le dernier id inserer dans la table domain
      *
      * @param integer $id
      * @param integer $isActive
      * @return array
      */
-    public function setActiveActivity(int $id, int $isActive):array{
+    public function setActiveDomain(int $id, int $isActive):array{
         
         
         if (!$id) {
             return [];
         }
         
-        $request = $this->db->prepare("UPDATE `activity` 
+        $request = $this->db->prepare("UPDATE `domain` 
                                         SET `is_active`=:is_active, `updated_at`=:updated_at 
                                         WHERE `id`=:id");
 
@@ -150,29 +150,29 @@ class EventModel extends Database{
 			return [];
 		} 
 
-        return $this->findActivityById($id);
+        return $this->findDomainById($id);
     }
 
 
     /**
-     * Cette methode sert à récupérer une activité à partir de son id. Cette methode 
-     * attend comme paramètre d'entree l'id de l'activité et retoure l'activité 
+     * Cette methode sert à récupérer un domaine à partir de son id. Cette methode 
+     * attend comme paramètre d'entree l'id du domaine d'activité et retourne le domaine 
      * sous forme de tableau
      * 
      * l'id fourni en parametre est injecté dans la requete sql envoyée vers la base de 
      * données afin d'effectuer le tri de façon plus efficace
      *
-     * @param integer $idActivity
+     * @param integer $idDomain
      * @return array
      */
-    public function findActivityById(int $idActivity):array{
+    public function findDomainById(int $idDomain):array{
 
         
-        if (!$idActivity) {
+        if (!$idDomain) {
 			return [];
 		} 
         
-        $request = $this->db->prepare("SELECT * FROM `activity` WHERE id=:id");
+        $request = $this->db->prepare("SELECT * FROM `domain` WHERE id=:id");
 
 
         if (!$request) {
@@ -180,7 +180,7 @@ class EventModel extends Database{
         }
 		
 		$arrayVar = array(
-            'id' => $idActivity,
+            'id' => $idDomain,
 		);
 		
 		$request->execute($arrayVar);
@@ -203,9 +203,9 @@ class EventModel extends Database{
 
 
     /**
-     * Cette methode sert à récupérer une activité à partir de son titre, sa 
+     * Cette methode sert à récupérer un domaine d'intervention à partir de son titre, sa 
      * description et le nom original de la photo qui lui est attachée. Cette methode 
-     * attend comme paramètre d'entree les informations pre-citées de l'activité et retoure l'activité 
+     * attend comme paramètre d'entree les informatios pré citéesn du domaine et retoure le domaine 
      * sous forme de tableau
      * 
      * les valeurs fournies en parametre sont injectés dans la requete sql envoyée vers 
@@ -214,21 +214,21 @@ class EventModel extends Database{
      * @param integer $idActivity
      * @return array
      */
-    public function findActivityByTitleDescriptionAndOriginalImageName(
+    public function findDomainByTitleDescriptionAndOriginalImageName(
             string $title,
             string $description,
             string $originalName
-        ):array{
+    ):array{
 
 
         if (!$title || !$description || !$originalName) {
 			return [];
 		} 
         
-        $request = $this->db->prepare("SELECT a.* FROM `activity` a
-                                            INNER JOIN `image` i ON a.id = i.id_activity
-                                            WHERE a.title=:title 
-                                            AND a.description=:description1
+        $request = $this->db->prepare("SELECT d.* FROM `domain` d
+                                            INNER JOIN `image` i ON d.id = i.id_activity
+                                            WHERE d.title=:title 
+                                            AND d.description=:description1
                                             AND i.original_name=:original_name");
 
 
@@ -257,10 +257,10 @@ class EventModel extends Database{
     
     
     /**
-     * Cette fonction sert à récupérer tous les évenement sachant que le nombre 
+     * Cette fonction sert à récupérer tous les domaine d'intervention sachant que le nombre 
      * charger est limiter pour des question de performance
      * 
-     * Le chargement est effectué par page et à ahaque fois on recupère un nombre precis
+     * Le chargement est effectué par page et à chaque fois on recupère un nombre precis
      *
      * @param integer $page
      * @return array
@@ -274,35 +274,10 @@ class EventModel extends Database{
         $from = ($page - 1) * DataManager::$QUANTITY_BY_PAGE;
         $quantity = DataManager::$QUANTITY_BY_PAGE;
 
-        $request = $this->db->prepare("SELECT a.* FROM `activity` a
-                                             ORDER BY a.id DESC");
-
-                                             
-        // $request = $this->db->prepare("SELECT a.*, i.* FROM `activity` a
-        //                                     INNER JOIN `image` i ON i.id_activity = a.id
-        //                                     LIMIT :from1, :quantity");
-
-        // $request = $this->db->prepare("SELECT *
-        //                                     FROM
-        //                                     (
-        //                                         SELECT t.*,
-        //                                             @rn := @rn + 1 AS rn
-        //                                         FROM activity t,
-        //                                         (SELECT @rn := 0) r
-        //                                     ) t
-        //                                     WHERE rn BETWEEN :start AND :end;");
-
-        // $arrayVar = array(
-        //     'from1' => intval($from),
-        //     "quantity" => $quantity 
-        // );
-        // $arrayVar = array(
-        //     'start' => 0,
-        //     "end" => 10 
-        // );
+        $request = $this->db->prepare("SELECT d.* FROM `domain` d
+                                             ORDER BY d.id DESC");
 
         $request->execute();
-        // $request->execute($arrayVar);
 
         if (!$request) {
             return [];

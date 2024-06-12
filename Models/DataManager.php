@@ -6,7 +6,7 @@ class DataManager{
 
     static $API_KEY = "AIzaSyA_BAG4LPfUj1CjxznPLAYruX6Egxlxn_0";
 
-    public static $QUANTITY_ORDER_BAY_PAGE = 12;
+    public static $QUANTITY_BY_PAGE = 12;
     
 
     /**

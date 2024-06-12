@@ -22,7 +22,7 @@
                     <div class="accordion-body">
                         <ul>
                             <li>
-                                <a href="">Domaines d'activité</a>
+                                <a href="/?page=admin&act=domains">Domaines d'activité</a>
                             </li>
                             <li>
                                 <a href="/?page=admin&act=events">Evénements</a>

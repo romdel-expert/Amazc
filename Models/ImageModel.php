@@ -34,26 +34,57 @@ class ImageModel extends Database{
         if (!$params || empty($params)) {
             return [];
         }
-        
-        $request = $this->db->prepare("INSERT INTO `image`(`name`, `original_name`, `title`, `description`, `size`, `extension`, `link`, `repository`, `size_text`, `id_activity`) 
+
+
+        $request = "";
+
+        $arrayVar = [];
+
+
+        if ($params["mode"] == "activity") {
+            $request = $this->db->prepare("INSERT INTO `image`(`name`, `original_name`, `title`, `description`, `size`, `extension`, `link`, `repository`, `size_text`, `id_activity`) 
                                         VALUES (:name1,:original_name,:title,:description1,:size1,:extension,:link,:repository,:size_text,:id_activity)");
+
+        
+            $arrayVar = array(
+                "name1" => $params["name"],
+                "original_name" => $params["originalName"],
+                "title" => $params["title"],
+                "description1" => $params["description"],
+                "size1" => $params["size"],
+                "extension" => $params["extension"],
+                "link" => $params["link"],
+                "repository" => $params["repository"],
+                "size_text" => $params["sizeText"],
+                "id_activity" => $params["idActivity"]
+            );
+        }
+        
+        
+        elseif ($params["mode"] == "domain") {
+            $request = $this->db->prepare("INSERT INTO `image`(`name`, `original_name`, `title`, `description`, `size`, `extension`, `link`, `repository`, `size_text`, `id_domain`) 
+                                        VALUES (:name1,:original_name,:title,:description1,:size1,:extension,:link,:repository,:size_text,:id_domain)");
+
+        
+            $arrayVar = array(
+                "name1" => $params["name"],
+                "original_name" => $params["originalName"],
+                "title" => $params["title"],
+                "description1" => $params["description"],
+                "size1" => $params["size"],
+                "extension" => $params["extension"],
+                "link" => $params["link"],
+                "repository" => $params["repository"],
+                "size_text" => $params["sizeText"],
+                "id_domain" => $params["idDomain"]
+            );
+        }
+
+
 
 		if (!$request) {
            return [];
         }
-        
-		$arrayVar = array(
-            "name1" => $params["name"],
-            "original_name" => $params["originalName"],
-            "title" => $params["title"],
-            "description1" => $params["description"],
-            "size1" => $params["size"],
-            "extension" => $params["extension"],
-            "link" => $params["link"],
-            "repository" => $params["repository"],
-            "size_text" => $params["sizeText"],
-            "id_activity" => $params["idActivity"]
-		);
 		
 		$request->execute($arrayVar);
 
@@ -88,26 +119,53 @@ class ImageModel extends Database{
             return [];
         }
         
-        $request = $this->db->prepare("UPDATE `image` 
+        
+        if ($params["mode"] == "activity") {
+            
+            $request = $this->db->prepare("UPDATE `image` 
                                         SET `name`=:name1,`original_name`=:original_name,`title`=:title,`description`=:description1,`size`=:size1,`extension`=:extension,`link`=:link,`size_text`=:size_text,`updated_at`=:updated_at 
                                         WHERE `id_activity`=:id_activity");
 
+            
+            $arrayVar = array(
+                "name1" => $params["name"],
+                "original_name" => $params["originalName"],
+                "title" => $params["title"],
+                "description1" => $params["description"],
+                "size1" => $params["size"],
+                "extension" => $params["extension"],
+                "link" => $params["link"],
+                "size_text" => $params["sizeText"],
+                "id_activity" => $params["idActivity"],
+                "updated_at" => date('Y-m-d H:i:s')
+            );
+        }
+
+        elseif ($params["mode"] == "domain") {
+            
+            $request = $this->db->prepare("UPDATE `image` 
+                                        SET `name`=:name1,`original_name`=:original_name,`title`=:title,`description`=:description1,`size`=:size1,`extension`=:extension,`link`=:link,`size_text`=:size_text,`updated_at`=:updated_at 
+                                        WHERE `id_domain`=:id_domain");
+
+            
+            $arrayVar = array(
+                "name1" => $params["name"],
+                "original_name" => $params["originalName"],
+                "title" => $params["title"],
+                "description1" => $params["description"],
+                "size1" => $params["size"],
+                "extension" => $params["extension"],
+                "link" => $params["link"],
+                "size_text" => $params["sizeText"],
+                "id_domain" => $params["idDomain"],
+                "updated_at" => date('Y-m-d H:i:s')
+            );
+        }
+
+        
 		if (!$request) {
            return [];
         }
-        
-		$arrayVar = array(
-            "name1" => $params["name"],
-            "original_name" => $params["originalName"],
-            "title" => $params["title"],
-            "description1" => $params["description"],
-            "size1" => $params["size"],
-            "extension" => $params["extension"],
-            "link" => $params["link"],
-            "size_text" => $params["sizeText"],
-            "id_activity" => $params["idActivity"],
-            "updated_at" => date('Y-m-d H:i:s')
-		);
 		
 		$data = $request->execute($arrayVar);
 
@@ -115,7 +173,7 @@ class ImageModel extends Database{
 			return [];
 		} 
 
-        return $this->findImageByActivity($params["idActivity"]);
+        return $this->findImageByDomain($params["idDomain"]);
     }
 
 
@@ -209,6 +267,54 @@ class ImageModel extends Database{
         
         return $data;
     }
+
+
+
+
+
+    /**
+     * Cette methode sert à récupérer une image à partir de l'id du domaine. Cette methode 
+     * attend comme paramètre d'entree l'id du domaine et retoure l'image 
+     * sous forme de tableau
+     * 
+     * l'id fourni en parametre est injecté dans la requete sql envoyée vers la base de 
+     * données afin d'effectuer le tri de façon plus efficace
+     *
+     * @param integer $idDomain
+     * @return array
+     */
+    public function findImageByDomain(int $idDomain):array{
+
+
+        if (!$idDomain) {
+			return [];
+		} 
+        
+        $request = $this->db->prepare("SELECT * FROM `image` WHERE id_domain=:id");
+
+
+        if (!$request) {
+           return [];
+        }
+		
+		$arrayVar = array(
+            'id' => $idDomain,
+		);
+		
+		$request->execute($arrayVar);
+        if (!$request) {
+            return [];
+        }
+
+		$data = $request->fetch(\PDO::FETCH_ASSOC);
+        if (!$data) {
+             return [];
+        }
+        
+        return $data;
+    }
+
+    
 
     /**
      * Cette methode sert à envoyer une reque sql vers la base de donnees 
