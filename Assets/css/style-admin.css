@@ -1,0 +1,375 @@
+@import url('style.css');
+
+.page-admin{
+    padding-bottom: 60px;
+    width: 90%;
+    margin: auto;
+}
+
+.page-admin .top{
+    padding-top: 30%;
+    text-align: center;
+}
+
+.page-admin img {
+    width: 200px;
+}
+
+.page-admin h1 {
+    color: var(--color-official);
+    font-size: 120%;
+}
+
+.menu-small .top{
+    display: block;
+    background: var(--color-official);
+    color: var(--white-official);
+    padding: 12px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+}
+
+.menu-small .top i{
+    font-size: 120%;
+    cursor: pointer;
+}
+
+
+.menu-small .top .bi-x-lg {
+    float: right;
+}
+
+.menu-small .menu {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: scroll;
+    background: var(--white-official);
+    padding: 30px;
+    font-weight: normal;
+    z-index: 1;
+}
+
+.menu-small .menu ul{
+    list-style: none;
+    padding: 0;
+    font-size: 90%;
+}
+.menu-small .menu ul > li {
+    padding: 15px;
+}
+.menu-small .menu .accordion-body{
+    padding: 0;
+}
+.menu-small .menu ul a{
+    color: var(--black-official);
+}
+.menu-small .menu  .accordion-body li {
+    cursor: pointer;
+    padding: 15px 15px;
+}
+
+.menu-small .menu ul li:hover {
+    background: var(--white-fade);
+    color: white;
+}
+
+
+
+
+
+
+
+.menu-large {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 25%;
+    background-color: var(--color-official);
+    color: var(--white-official);
+}
+
+.menu-large .accordion, .menu-large .accordion .accordion-item, .menu-large .accordion .accordion-button{
+    background-color: var(--color-official) !important;
+    color: var(--white-official);
+}
+
+.menu-large ul{
+   list-style: none;
+   padding: 0;
+}
+
+.menu-large a {
+    color: var(--white-official);
+}
+
+.menu-large .top {
+    background: var(--white-fade);
+    color: var(--white-official);
+    padding: 15px;
+}
+
+.menu-large .top i{
+    font-size: 120%;
+}
+
+.menu-large .content-menu li{
+    font-size: 90%;
+    padding: 15px;
+    cursor: pointer;
+}
+
+
+.left-page {
+    position: fixed;
+    top: 55px;
+    bottom: 0;
+    right: 1%;
+    width: 98%;
+    overflow-y: scroll;
+}
+
+.left-page h1 {
+    font-size: 150%;
+    color: var(--color-official);
+}
+
+.case-domain{
+    background: var(--white-official);
+}
+
+.case-domain .body{
+    padding: 10px 30px 30px 20px;
+}
+
+.case-domain h5 {
+    color: var(--color-official);
+    font-size: 100%;
+}
+
+.case-domain p {
+    font-size: 80%;
+}
+
+
+
+
+.fix-position{
+    position: fixed;
+    right: 20px;
+    width: 200px;
+    text-align: center;
+    top: 70px;
+}
+
+
+.page-admin-full {
+    margin: 80px 0px 0px 0px;
+}
+
+.activity {
+    background: #ffffff;
+}
+
+.activity .body {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.activity .body h5{
+    color: var(--orange-dark);
+    font-size: 90%;
+}
+
+.activity .body p {
+    font-size: 70%;
+    margin-top: 20px;
+}
+
+.activity .row .option button{
+    font-size: 200%;
+}
+
+/* --------------------------------------------------------------------------------------- */
+
+@media screen and (min-width: 1400px) {
+    .page-admin {
+        width: 30%;
+        margin: auto;
+        padding-top: 60px;
+    }
+
+    .menu-small {
+        display: none;
+    }
+    
+    .menu-large {
+        display: block;
+    }
+
+    .left-page {
+        position: fixed;
+        top: 0px;
+        bottom: 0;
+        right: 0;
+        width: 74%;
+    }
+
+
+    .page-admin-full {
+        margin: 80px 0px 0px 0px;
+        width: 74%;
+        float: right;
+    }
+    
+    .fix-position {
+        top: 40px;
+    }
+}
+
+/* --------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 1399px) and (min-width: 1200px) {
+    .page-admin {
+        width: 40%;
+        margin: auto;
+        padding-top: 60px;
+    }
+    
+    .menu-small {
+        display: none;
+    }
+    
+    .menu-large {
+        display: block;
+        width: 30%;
+    }
+    
+    .left-page {
+        position: fixed;
+        top: 0px;
+        bottom: 0;
+        right: 0;
+        width: 69%;
+    }
+    
+    .page-admin-full {
+        margin: 80px 0px 0px 0px;
+        width: 69%;
+        float: right;
+    }
+    
+    .fix-position {
+        top: 40px;
+    }
+}
+
+/* --------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 1199px) and (min-width: 992px) {
+
+    .page-admin {
+        width: 40%;
+        margin: auto;
+        padding-top: 60px;
+    }
+    
+    .menu-small {
+        display: none;
+    }
+    
+    .menu-large {
+        display: block;
+        width: 35%;
+    }
+    
+    .left-page {
+        position: fixed;
+        top: 0px;
+        bottom: 0;
+        right: 0;
+        width: 64%;
+    }
+    
+    .page-admin-full {
+        margin: 80px 0px 0px 0px;
+        width: 64%;
+        float: right;
+    }
+    
+    .fix-position {
+        top: 40px;
+    }
+}
+
+/* --------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 991px) and (min-width: 768px) {
+    .page-admin {
+        width: 50%;
+        margin: auto;
+    }
+    
+    .menu-small {
+        display: none;
+    }
+    
+    .menu-large {
+        display: block;
+        width: 40%;
+    }
+    
+    .left-page {
+        position: fixed;
+        top: 0px;
+        bottom: 0;
+        right: 0;
+        width: 59%;
+    }
+    
+    .page-admin-full {
+        margin: 80px 0px 0px 0px;
+        width: 59%;
+        float: right;
+    }
+    
+    .fix-position {
+        top: 40px;
+    }
+}
+
+/* --------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 767px) and (min-width: 576px) {
+    .page-admin {
+        width: 70%;
+        margin: auto;
+    }
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 575px) and (min-width: 320px) {
+    
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+
+/* @media screen and (max-width: 374px) and (min-width: 320px) {
+    
+} */
+
+
+
+/* ---------------------------------------------------------------------------------------------- */
+
+/* @media screen and (max-width: 319px) {
+    
+} */

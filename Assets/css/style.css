@@ -1,0 +1,637 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,300;1,400&display=swap');
+
+*{
+    font-family: Roboto;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+
+    background: var(--bgd-body);
+}
+
+a{
+    text-decoration: none;
+}
+
+:root {
+    --color-official: rgb(0, 151, 178);
+    --white-official: rgb(255, 255, 255);
+    --white-fade: rgb(154, 169, 193);
+    --orange-official: rgba(255, 196, 58, 1);
+    --bgd-body: rgb(229, 239, 236);
+    --bgd-footer: rgb(57,93,116);
+    --bgd-footer-2: rgb(54, 61, 65);
+    --orange-dark: #ff7b05;
+    --black-official: #292929;
+     --font-family-title: Impact, 
+        Haettenschweiler,
+        'Arial Narrow Bold',
+        sans-serif;
+}
+
+.btn-official, .btn-warning{
+    color: var(--white-official);
+    cursor: pointer;
+    border: .5px solid var(--color-official);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 80%;
+    width: 100%;
+}
+
+.btn-official {
+    background-color: var(--color-official);
+}
+
+.btn-official:hover{
+    background-color: var(--white-official);
+    color: var(--color-official);
+    border: .5px solid var(--color-official);
+}
+
+.btn-warning{
+    background-color: var(--orange-dark);
+}
+
+.btn-warning:hover {
+    background-color: var(--white-official);
+    border: .5px solid var(--orange-dark);
+    color: var(--orange-dark);
+}
+.small-menu {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 80px;
+    padding: 20px 20px;
+}
+.small-menu .nav i {
+    cursor: pointer;
+    color: var(--color-official);
+    font-size: 150%;
+}
+
+.small-menu .nav i:hover {
+    color: var(--orange-dark);
+}
+
+.small-menu .nav .logo img{
+    width: 60px;
+    cursor: pointer;
+}
+
+.middle-menu {
+    display: none;
+}
+
+.large-menu {
+    display: none;
+}
+
+.top-menu .large-menu .person a {
+    color: var(--color-official);
+}
+
+.bottom-menu .large-menu a{
+    color: var(--white-official);
+}
+
+.large-menu, .middle-menu, .small-menu{
+    background: var(--white-official);
+}
+
+
+.bottom-menu .large-menu > div > div{
+    cursor: pointer;
+}
+
+.bottom-menu .large-menu>div>div:hover {
+    background: var(--orange-dark);
+}
+
+.content-page {
+    width: 90%;
+    margin: 200px 5% 60px 5%;
+}
+
+.page {
+    width: 98%;
+    margin: auto;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+
+
+
+
+.content-page h1, .page h1{
+    color: var(--color-official);
+    font-size: 120%;
+}
+
+.page h2{
+    color: var(--color-official);
+    font-size: 100%;
+}
+
+.page p {
+    font-size: 90%;
+}
+
+.modal-small-menu{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .7);
+    z-index: 1;
+}
+
+.content-small-menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 320px;
+    left: 0;
+    background: var(--bgd-body);
+    z-index: 2;
+}
+
+.content-small-menu .header{
+    position: fixed;
+    top: 0;
+    height: 60px;
+    background: var(--color-official);
+    color: var(--white-official);
+    width: 320px;
+    padding: 15px 20px;
+}
+
+.content-small-menu .header i{
+    font-size: 120%;
+    float: right;
+    cursor: pointer;
+}
+
+.content-small-menu .body .top {
+    background: var(--white-official);
+}
+
+.content-small-menu .body .top .acount{
+    padding: 20px;
+    border-bottom: .5px solid var(--color-official);
+    cursor: pointer;
+}
+
+.content-small-menu .body .top .donation {
+    padding: 20px;
+    border-bottom: .5px solid var(--color-official);
+}
+
+.content-small-menu .body .top .acount i{
+    font-size: 120%;
+}
+
+.content-small-menu .body .top .acount span {
+    font-size: 90%;
+}
+
+.content-small-menu .body {
+    position: fixed;
+    top: 60px;
+    bottom: O;
+    width: 320px;
+    overflow-y: scroll;
+    font-size: 90%;
+}
+
+.content-small-menu .body .bottom > div, .content-small-menu .body .bottom>div a {
+    padding: 10px 20px;
+    cursor: pointer;
+    color: var(--color-official);
+}
+
+.content-small-menu .body .bottom>div:hover,  .content-small-menu .body .bottom>div a:hover{
+    background: var(--color-official);
+    color: var(--white-official);
+}
+
+
+.footer{
+    background: var(--bgd-footer);
+    color: var(--white-official);
+    padding: 30px 30px;
+}
+
+.footer .logo img{
+    width: 200px;
+}
+
+.footer h3 {
+    margin: 20px 0px;
+    border-bottom: .5px solid var(--orange-official);
+    padding: 10px 0px;
+    color: var(--orange-official);
+    font-size: 120%;
+}
+
+.footer a, .footer p, .footer h4{
+    color: var(--white-official);
+    font-size: 90%;
+}
+
+.footer .network{
+    margin: 15px 0px;
+}
+
+.footer-2 {
+    background: var(--bgd-footer-2);
+    color: var(--white-fade);
+    padding: 30px 30px;
+    font-size: 90%;
+}
+
+.footer-2 a{
+    color: var(--white-fade);
+}
+
+/* --------------------------------------------------------------------------------------- */
+
+@media screen and (min-width: 1400px) {
+    .small-menu {
+        display: none;
+    }
+
+    .middle-menu {
+        display: none;
+    }
+
+    .large-menu {
+        display: block;
+    }
+    
+    .top-menu .large-menu {
+        position: fixed;
+        width: 100%;
+        height: 100px;
+        padding: 10px 10px;
+        top: 0;
+    }
+    
+    .top-menu .large-menu .logo {
+        text-align: left;
+        width: 100%;
+    }
+    
+    .top-menu .large-menu .logo img {
+        width: 200px;
+        cursor: pointer;
+    }
+    
+    .top-menu .large-menu .right {
+        position: absolute;
+        top: 40px;
+        right: 30px;
+        width: 40%;
+    }
+    
+    .top-menu .large-menu .right .phone {
+        padding: 10px;
+        text-align: right;
+        color: var(--orange-dark)
+    }
+    
+    .top-menu .large-menu .right .person {
+        font-size: 150%;
+        cursor: pointer;
+        color: var(--color-official);
+    }
+    
+    .top-menu .large-menu .right a :hover {
+        color: var(--orange-dark);
+    }
+    
+    
+    
+    .bottom-menu .large-menu {
+        position: fixed;
+        width: 100%;
+        top: 100px;
+        height: 40px;
+        background: var(--color-official);
+        color: var(--white-official);
+        font-size: 80%;
+    }
+    
+    .bottom-menu .large-menu>div > div{
+        padding: 10px 20px;
+    }
+    
+    .content-page {
+        width: 30%;
+        margin: 200px 35% 60px 35%;
+    }
+
+    .box-small-menu{
+        display: none;
+    }
+
+    .page {
+        width: 90%;
+        margin: auto;
+        margin-top: 200px;
+        margin-bottom: 50px;
+    }
+}
+
+/* --------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 1399px) and (min-width: 1200px) {
+    .small-menu {
+        display: none;
+    }
+
+    .middle-menu {
+        display: none;
+    }
+
+    .large-menu {
+        display: block;
+    }
+    
+    .top-menu .large-menu {
+        position: fixed;
+        width: 100%;
+        height: 100px;
+        padding: 10px 10px;
+        top: 0;
+    }
+    
+    .top-menu .large-menu .logo {
+        text-align: left;
+        width: 100%;
+    }
+    
+    .top-menu .large-menu .logo img {
+        width: 200px;
+        cursor: pointer;
+    }
+    
+    .top-menu .large-menu .right {
+        position: absolute;
+        top: 40px;
+        right: 30px;
+        width: 40%;
+    }
+    
+    .top-menu .large-menu .right .phone {
+        padding: 10px;
+        text-align: right;
+        color: var(--orange-dark)
+    }
+    
+    .top-menu .large-menu .right .person {
+        font-size: 150%;
+        cursor: pointer;
+        color: var(--color-official);
+    }
+    
+    .top-menu .large-menu .right a:hover {
+        color: var(--orange-dark);
+    }
+    
+    
+    
+    .bottom-menu .large-menu {
+        position: fixed;
+        width: 100%;
+        top: 100px;
+        height: 40px;
+        background: var(--color-official);
+        color: var(--white-official);
+        font-size: 80%;
+    }
+    
+    .bottom-menu .large-menu>div>div {
+        padding: 10px 20px;
+    }
+    
+    
+
+
+    .content-page {
+        width: 40%;
+        margin: 200px 30% 60px 30%;
+    }
+    
+    .box-small-menu {
+        display: none;
+    }
+    
+    .page {
+        width: 90%;
+        margin: auto;
+        margin-top: 200px;
+        margin-bottom: 50px;
+    }
+}
+
+/* --------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 1199px) and (min-width: 992px) {
+
+    .small-menu {
+        display: none;
+    }
+
+    .middle-menu {
+        display: none;
+    }
+    
+    .large-menu {
+        display: block;
+    }
+
+    .top-menu .large-menu {
+        position: fixed;
+        width: 100%;
+        height: 100px;
+        padding: 10px 10px;
+        top: 0;
+    }
+
+    .top-menu .large-menu .logo{
+        text-align: left;
+        width: 100%;
+    }
+
+    .top-menu .large-menu .logo img{
+        width: 200px;
+        cursor: pointer;
+    }
+
+    .top-menu .large-menu .right{
+        position: absolute;
+        top: 40px;
+        right: 30px;
+        width: 40%;
+    }
+    
+    .top-menu .large-menu .right .phone{
+        padding: 10px;
+        text-align: right;
+        color: var(--orange-dark)
+    }
+
+    .top-menu .large-menu .right .person {
+        font-size: 150%;
+        cursor: pointer;
+        color: var(--color-official);
+    }
+
+    .top-menu .large-menu .right a:hover {
+        color: var(--orange-dark);
+    }
+
+
+
+    .bottom-menu .large-menu{
+        position: fixed;
+        width: 100%;
+        top: 100px; 
+        height: 40px;
+        background: var(--color-official);
+        color: var(--white-official);
+        font-size: 80%;
+    }
+    
+    .bottom-menu .large-menu > div > div{
+        padding: 10px 20px;
+    }
+    
+    .content-page {
+        width: 50%;
+        margin: 200px 25% 60px 25%;
+    }
+    
+    .box-small-menu {
+        display: none;
+    }
+    
+    .page {
+        width: 90%;
+        margin: auto;
+        margin-top: 200px;
+        margin-bottom: 50px;
+    }
+
+}
+
+/* --------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 991px) and (min-width: 768px) {
+    .small-menu {
+        display: none;
+    }
+
+    .middle-menu {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 90px;
+        padding: 30px 20px;
+    }
+    
+    .middle-menu .nav i {
+        cursor: pointer;
+        color: var(--color-official);
+        font-size: 180%;
+    }
+    
+    .middle-menu .nav i:hover {
+        color: var(--orange-dark);
+    }
+    
+    .middle-menu .nav .logo img {
+        width: 80px;
+        cursor: pointer;
+    }
+
+    .large-menu {
+        display: none;
+    }
+    
+    .content-page {
+        width: 60%;
+        margin: 140px 20% 60px 20%;
+    }
+    .box-small-menu{
+        display: block;
+    }
+}
+
+/* --------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 767px) and (min-width: 576px) {
+    .small-menu{
+        display: block;
+    }
+    .middle-menu {
+        display: none;
+    }
+    .large-menu {
+        display: none;
+    }
+
+    .content-page {
+        width: 70%;
+        margin: 140px 15% 60px 15%;
+    }
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 575px) and (min-width: 320px) {
+    .small-menu {
+        display: block;
+    }
+
+    .middle-menu {
+        display: none;
+    }
+
+    .large-menu {
+        display: none;
+    }
+
+
+    .content-page {
+        width: 70%;
+        margin: 140px 15% 60px 15%;
+    }
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+
+/* @media screen and (max-width: 374px) and (min-width: 320px) {
+    
+} */
+
+
+
+/* ---------------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 319px) {
+    .content-page {
+        width: 70%;
+        margin: 140px 15% 60px 15%;
+    }
+}
