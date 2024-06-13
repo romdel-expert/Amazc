@@ -631,6 +631,14 @@ a{
         width: 70%;
         margin: 140px 15% 60px 15%;
     }
+    
+    .content-carousel {
+        height: 300px;
+    }
+    
+    .content-carousel .carousel-text {
+        margin: 30px 0% 30px 10%;
+    }
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -652,14 +660,65 @@ a{
     .content-page {
         width: 70%;
         margin: 140px 15% 60px 15%;
+    } 
+    
+    .content-carousel {
+         height: 300px;
+    }
+    
+    .content-carousel .carousel-text {
+        margin: 30px 0% 30px 10%;
+    }
+}
+
+
+/* ---------------------------------------------------------------------------------------------- */
+
+@media screen and (max-width: 474px) and (min-width: 375px) {
+    .content-carousel {
+        height: 200px;
+    }
+
+    .content-carousel .carousel-text {
+        margin: 20px 0% 20px 10%;
+    }
+
+    .content-carousel .carousel-text h1 {
+        font-size: 100%;
+    }
+
+    .content-carousel .carousel-text h3 {
+        font-size: 100%;
+    }
+
+    .content-carousel .carousel-text h4 {
+        font-size: 90%;
     }
 }
 
 /* ---------------------------------------------------------------------------------------------- */
 
-/* @media screen and (max-width: 374px) and (min-width: 320px) {
-    
-} */
+@media screen and (max-width: 374px) and (min-width: 320px) {
+    .content-carousel {
+        height: 200px;
+    }
+
+    .content-carousel .carousel-text {
+        margin: 20px 0% 20px 10%;
+    }
+
+    .content-carousel .carousel-text h1 {
+        font-size: 100%;
+    }
+
+    .content-carousel .carousel-text h3 {
+        font-size: 90%;
+    }
+
+    .content-carousel .carousel-text h4 {
+        font-size: 85%;
+    }
+}
 
 
 
@@ -669,5 +728,25 @@ a{
     .content-page {
         width: 70%;
         margin: 140px 15% 60px 15%;
+    }
+    
+    .content-carousel {
+        height: 200px;
+    }
+    
+    .content-carousel .carousel-text {
+        margin: 20px 0% 20px 10%;
+    }
+
+    .content-carousel .carousel-text h1{
+        font-size: 100%;
+    }
+
+    .content-carousel .carousel-text h3 {
+        font-size: 90%;
+    }
+    
+    .content-carousel .carousel-text h4 {
+        font-size: 85%;
     }
 }

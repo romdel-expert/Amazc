@@ -10,12 +10,13 @@ error_reporting(E_ALL);
 session_start();
 
 
+
+require(ROOT . "/Models/Database.php");
+
 if (isset($_GET["page"]) && $_GET["page"]) {
     
     $pageName = $_GET["page"];
     $fileController = ucfirst($pageName).'Controller.php';
-
-    require(ROOT . "/Models/Database.php");
     
     if (file_exists("Controllers/" . $fileController)) {
         include("Controllers/" . $fileController);
@@ -41,7 +42,7 @@ if (isset($_GET["page"]) && $_GET["page"]) {
         $page->home();
     }
 } else {
-    include("Controllers/ErrorController.php");
-    $page = new Controllers\ErrorController();
-    $page->show();
+    include("Controllers/HomeController.php");
+    $page = new Controllers\HomeController();
+    $page->home();
 }
