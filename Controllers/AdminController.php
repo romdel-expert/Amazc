@@ -6,17 +6,20 @@ use Models\DataManager;
 use Models\EventModel;
 use Models\DomainModel;
 use Models\ImageModel;
+use Models\ParamsModel;
 
 require ROOT . "/Models/ImageModel.php";
 require ROOT . "/Models/DataManager.php";
 require ROOT . "/Models/EventModel.php";
 require ROOT . "/Models/DomainModel.php";
+require ROOT . "/Models/ParamsModel.php";
 
 class AdminController{
 
     private $imageModel;
     private $eventModel;
     private $domainModel;
+    private $paramsModel;
 
 
     public function __construct()
@@ -24,6 +27,7 @@ class AdminController{
         $this->imageModel = new ImageModel();
         $this->eventModel = new EventModel();
         $this->domainModel = new DomainModel();
+        $this->paramsModel = new ParamsModel();
     }
     
     
@@ -248,6 +252,7 @@ class AdminController{
             $msgLoginError = "";
             $emailLogin = "";
             require(ROOT . "/Views/admin/pages/login.php");
+            exit();
         }
 
         
@@ -345,6 +350,7 @@ class AdminController{
             $msgLoginError = "";
             $emailLogin = "";
             require(ROOT . "/Views/admin/pages/login.php");
+            exit();
         }
 
         
@@ -442,6 +448,7 @@ class AdminController{
             $msgLoginError = "";
             $emailLogin = "";
             require(ROOT . "/Views/admin/pages/login.php");
+            exit();
         }
 
         
@@ -560,6 +567,7 @@ class AdminController{
             $msgLoginError = "";
             $emailLogin = "";
             require(ROOT . "/Views/admin/pages/login.php");
+            exit();
         }
 
         
@@ -678,6 +686,7 @@ class AdminController{
             $msgLoginError = "";
             $emailLogin = "";
             require(ROOT . "/Views/admin/pages/login.php");
+            exit();
         }
 
         
@@ -764,6 +773,7 @@ class AdminController{
             $msgLoginError = "";
             $emailLogin = "";
             require(ROOT . "/Views/admin/pages/login.php");
+            exit();
         }
 
         
@@ -1142,5 +1152,271 @@ class AdminController{
         $domain["image"] = $this->imageModel->findImageByDomain($domain["id"]);
         
         return $domain;
+    }
+
+
+
+    /**
+     * Cette methode sert à afficher la page permettant de visualiser le contenu du text de 'a propos' 
+     * qui parle de l'association
+     * 
+     * Cette page est accessible uniquement aux administrateurs et c'est pouquoi on verifie que la session
+     * de l'administrateur existe avant d'afficher la page
+     * 
+     * Si la session n'est pas en cours on renvoie vers la page de login
+     *
+     * @return void
+     */
+    public function about(){
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+            exit();
+        }
+
+
+        $dataParams = $this->formatParams($this->paramsModel->getParams());
+        $msgAboutError = "";
+        require(ROOT . "/Views/admin/pages/about.php");
+    }
+
+
+
+    /**
+     * Cette methode sert à afficher la page permettant de visualiser le contenu du text de 'ADN' 
+     * qui parle de l'association
+     * 
+     * Cette page est accessible uniquement aux administrateurs et c'est pouquoi on verifie que la session
+     * de l'administrateur existe avant d'afficher la page
+     * 
+     * Si la session n'est pas en cours on renvoie vers la page de login
+     *
+     * @return void
+     */
+    public function dna(){
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+            exit();
+        }
+
+
+        $dataParams = $this->formatParams($this->paramsModel->getParams());
+        $msgDnaError = "";
+        require(ROOT . "/Views/admin/pages/dna.php");
+    }
+
+
+
+    /**
+     * Cette methode sert à afficher la page permettant de visualiser le contenu du text du comité 
+     * qui parle de l'association
+     * 
+     * Cette page est accessible uniquement aux administrateurs et c'est pouquoi on verifie que la session
+     * de l'administrateur existe avant d'afficher la page
+     * 
+     * Si la session n'est pas en cours on renvoie vers la page de login
+     *
+     * @return void
+     */
+    public function committee(){
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+            exit();
+        }
+
+
+        $dataParams = $this->formatParams($this->paramsModel->getParams());
+        $msgCommitteeError = "";
+        require(ROOT . "/Views/admin/pages/committee.php");
+    }
+
+
+
+    /**
+     * Cette methode sert à recupérer le contenu du champs qui detaille l'a propos de l'association
+     * et lancer la procedure d'enregistrement de ce contenu dans la base de données
+     * 
+     * Plusieurs vérifications sont effectuer 
+     * 
+     * on verfie la session de l'administrateur
+     * on verifie le contenu de la variage de requete
+     * on verife egalement le contenu du text à propos qui existe car il s'agi tout simplement d'une 
+     * modification du texte existant car ce texte bien que initialement vide, fait partie des 
+     * configurations du site
+     *
+     * @return void
+     */
+    public function saveAbout(){
+
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+            exit();
+        }
+
+        
+        $dataParams = $this->formatParams($this->paramsModel->getParams());
+        if (!$dataParams) {
+            $msgAboutError = "Aucun paramètre trouvé";
+            $dataParams["about"] = "";
+            require(ROOT . "/Views/admin/pages/about.php");
+            exit();
+        }
+        
+
+        if (empty($_POST)) {
+            $msgAboutError = "Contenu de la reqête vide";
+            require(ROOT . "/Views/admin/pages/about.php");
+            exit();
+        }
+        
+
+        $params = $_POST;
+        $params["id"] = $dataParams["id"];
+        $params["mode"] = "about";
+        
+        $dataParams = $newDataParams = $this->formatParams($this->paramsModel->saveParams($params));
+        $msgAboutError = "";
+        require(ROOT . "/Views/admin/pages/about.php");
+    }
+
+
+
+    /**
+     * Cette methode sert à recupérer le contenu du champs qui detaille l'ADN de lassociation
+     * et lancer la procedure d'enregistrement de ce contenu dans la base de données
+     * 
+     * Plusieurs vérifications sont effectuer 
+     * 
+     * on verfie la session de l'administrateur
+     * on verifie le contenu de la variage de requete
+     * on verife egalement le contenu du text ADN qui existe car il s'agi tout simplement d'une 
+     * modification du texte existant car ce texte bien que initialement vide, fait partie des 
+     * configurations du site
+     *
+     * @return void
+     */
+    public function saveDna(){
+
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+            exit();
+        }
+
+        
+        $dataParams = $this->formatParams($this->paramsModel->getParams());
+        if (!$dataParams) {
+            $msgDnaError = "Aucun paramètre trouvé";
+            $dataParams["dna"] = "";
+            require(ROOT . "/Views/admin/pages/dna.php");
+            exit();
+        }
+        
+
+        if (empty($_POST)) {
+            $msgDnaError = "Contenu de la reqête vide";
+            require(ROOT . "/Views/admin/pages/dna.php");
+            exit();
+        }
+        
+
+        $params = $_POST;
+        $params["id"] = $dataParams["id"];
+        $params["mode"] = "dna";
+        
+        $dataParams = $newDataParams = $this->formatParams($this->paramsModel->saveParams($params));
+        $msgDnaError = "";
+        require(ROOT . "/Views/admin/pages/dna.php");
+    }
+
+
+
+    /**
+     * Cette methode sert à recupérer le contenu du champs qui detaille le comité de lassociation
+     * et lancer la procedure d'enregistrement de ce contenu dans la base de données
+     * 
+     * Plusieurs vérifications sont effectuer 
+     * 
+     * on verfie la session de l'administrateur
+     * on verifie le contenu de la variage de requete
+     * on verife egalement le contenu du text ADN qui existe car il s'agi tout simplement d'une 
+     * modification du texte existant car ce texte bien que initialement vide, fait partie des 
+     * configurations du site
+     *
+     * @return void
+     */
+    public function saveCommittee(){
+
+        if (!isset($_SESSION["admin"])) {
+            $msgLoginError = "";
+            $emailLogin = "";
+            require(ROOT . "/Views/admin/pages/login.php");
+            exit();
+        }
+
+        
+        $dataParams = $this->formatParams($this->paramsModel->getParams());
+        if (!$dataParams) {
+            $msgCommitteeError = "Aucun paramètre récupéré";
+            $dataParams["commitee"] = "";
+            require(ROOT . "/Views/admin/pages/committee.php");
+            exit();
+        }
+        
+
+        if (empty($_POST)) {
+            $msgCommitteeError = "Contenu de la reqête vide";
+            require(ROOT . "/Views/admin/pages/committee.php");
+            exit();
+        }
+        
+
+        $params = $_POST;
+        $params["id"] = $dataParams["id"];
+        $params["mode"] = "committee";
+        
+        $dataParams = $newDataParams = $this->formatParams($this->paramsModel->saveParams($params));
+        $msgCommitteeError = "";
+        require(ROOT . "/Views/admin/pages/committee.php");
+    }
+
+
+
+
+    /**
+     * Cette methode sert à s'ocuper de la mise en forme du contenu du tablea params
+     * lors de la recupération on recupere des textes contenant des balises <br> que nous 
+     * devous transformer en \n dans le formulaire avant l'affichage pour eviter d'avoir 
+     * des balises <br> dans le form
+     *
+     * @param array $params
+     * @return array
+     */
+    private function formatParams(array $params):array{
+        if (!$params) {
+            return [];
+        }
+
+        if ($params["about"]) {
+            $params["about"] = str_replace("<br>", "\n", $params["about"]);
+        }
+        
+        if ($params["dna"]) {
+            $params["dna"] = str_replace("<br>", "\n", $params["dna"]);
+        }
+        
+        if ($params["committee"]) {
+            $params["committee"] = str_replace("<br>", "\n", $params["committee"]);
+        }
+
+        return $params;
     }
 }

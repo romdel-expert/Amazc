@@ -315,4 +315,65 @@ class EventModel extends Database{
 
         return $data;
     }
+    
+    
+    /**
+     * Cette fonction sert à récupérer tous les évenement actifs sachant que le nombre 
+     * charger est limiter pour des question de performance
+     * 
+     * Le chargement est effectué par page et à ahaque fois on recupère un nombre precis
+     *
+     * @param integer $page
+     * @return array
+     */
+    public function findAllActive(int $page):array{
+        
+        if (!$page) {
+            $page = 1;
+        }
+
+        $from = ($page - 1) * DataManager::$QUANTITY_BY_PAGE;
+        $quantity = DataManager::$QUANTITY_BY_PAGE;
+
+        $request = $this->db->prepare("SELECT a.* FROM `activity` a WHERE a.is_active = true
+                                             ORDER BY a.id DESC");
+
+                                             
+        // $request = $this->db->prepare("SELECT a.*, i.* FROM `activity` a
+        //                                     INNER JOIN `image` i ON i.id_activity = a.id
+        //                                     LIMIT :from1, :quantity");
+
+        // $request = $this->db->prepare("SELECT *
+        //                                     FROM
+        //                                     (
+        //                                         SELECT t.*,
+        //                                             @rn := @rn + 1 AS rn
+        //                                         FROM activity t,
+        //                                         (SELECT @rn := 0) r
+        //                                     ) t
+        //                                     WHERE rn BETWEEN :start AND :end;");
+
+        // $arrayVar = array(
+        //     'from1' => intval($from),
+        //     "quantity" => $quantity 
+        // );
+        // $arrayVar = array(
+        //     'start' => 0,
+        //     "end" => 10 
+        // );
+
+        $request->execute();
+        // $request->execute($arrayVar);
+
+        if (!$request) {
+            return [];
+        }
+
+        $data = $request->fetchAll();
+        if (!$data) {
+            return [];
+        }
+
+        return $data;
+    }
 }

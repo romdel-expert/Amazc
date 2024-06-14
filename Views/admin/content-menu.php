@@ -27,6 +27,15 @@
                             <li>
                                 <a href="/?page=admin&act=events">Evénements</a>
                             </li>
+                            <li>
+                                <a href="/?page=admin&act=about">A propos de nous</a>
+                            </li>
+                            <li>
+                                <a href="/?page=admin&act=dna">Notre ADN</a>
+                            </li>
+                            <li>
+                                <a href="/?page=admin&act=committee">Notre Comité</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

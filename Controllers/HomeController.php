@@ -4,22 +4,26 @@ namespace Controllers;
 use Models\EventModel;
 use Models\DomainModel;
 use Models\ImageModel;
+use Models\ParamsModel;
 
 require ROOT . "/Models/EventModel.php";
 require ROOT . "/Models/DomainModel.php";
 require ROOT . "/Models/ImageModel.php";
+require ROOT . "/Models/ParamsModel.php";
 
 class HomeController{
 
     private $eventModel;
     private $domainModel;
     private $imageModel;
+    private $paramsModel;
 
     public function __construct()
     {
         $this->eventModel = new EventModel();
         $this->imageModel = new ImageModel();
         $this->domainModel = new DomainModel();
+        $this->paramsModel = new ParamsModel();
     }
     
     /**
@@ -31,8 +35,9 @@ class HomeController{
     public function home(){
         $title = "Accueil Association Michel-Archange";
         $page = 1;
-        $listActivities = $this->setListActivities($this->eventModel->findAll($page));
-        $listDomains = $this->setListDomains($this->domainModel->findAll($page));
+        $listActivities = $this->setListActivities($this->eventModel->findAllActive($page));
+        $listDomains = $this->setListDomains($this->domainModel->findAllActive($page));
+        $dataParams = $this->paramsModel->getParams();
         require(ROOT ."/Views/home.php");
     }
 

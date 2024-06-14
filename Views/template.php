@@ -11,7 +11,7 @@
                 la variable content permet de récuperer le contenu de la la page 
                 Ce contenu varie d'une page à l'autre
     -->
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding: 0;">
         <?= $content; ?>
     </div>
 

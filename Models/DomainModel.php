@@ -290,4 +290,40 @@ class DomainModel extends Database{
 
         return $data;
     }
+    
+    
+    /**
+     * Cette fonction sert à récupérer tous les domaine d'intervention actifs sachant que le nombre 
+     * charger est limiter pour des question de performance
+     * 
+     * Le chargement est effectué par page et à chaque fois on recupère un nombre precis
+     *
+     * @param integer $page
+     * @return array
+     */
+    public function findAllActive(int $page):array{
+        
+        if (!$page) {
+            $page = 1;
+        }
+
+        $from = ($page - 1) * DataManager::$QUANTITY_BY_PAGE;
+        $quantity = DataManager::$QUANTITY_BY_PAGE;
+
+        $request = $this->db->prepare("SELECT d.* FROM `domain` d WHERE d.is_active = true
+                                             ORDER BY d.id DESC");
+
+        $request->execute();
+
+        if (!$request) {
+            return [];
+        }
+
+        $data = $request->fetchAll();
+        if (!$data) {
+            return [];
+        }
+
+        return $data;
+    }
 }

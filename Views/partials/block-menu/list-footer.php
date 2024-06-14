@@ -53,7 +53,7 @@
             <p>
                 <i class="bi bi-envelope"></i>
                 &nbsp;
-                <a href="/contact/form">
+                <a href="/?page=contact&act=form">
                     Ecrivez-nous
                 </a>
             </p>

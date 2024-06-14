@@ -92,6 +92,7 @@ a{
     left: 0;
     height: 80px;
     padding: 20px 20px;
+    z-index: 10;
 }
 .small-menu .nav i {
     cursor: pointer;
@@ -126,6 +127,7 @@ a{
 
 .large-menu, .middle-menu, .small-menu{
     background: var(--white-official);
+    z-index: 10;
 }
 
 
@@ -147,6 +149,28 @@ a{
     margin: auto;
     margin-top: 100px;
     margin-bottom: 50px;
+}
+
+
+.block-about{
+    width: 98%;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+.block-about h2{
+    color: var(--orange-dark);
+    font-size: 100%;
+}
+
+.block-about p {
+    color: var(--black-official);
+    font-size: 80%;
+}
+
+.block-about .activity {
+    padding: 30px;
 }
 
 
@@ -285,6 +309,44 @@ a{
     color: var(--white-fade);
 }
 
+
+.row-photo{
+    background: rgba(0, 0, 0, .9);
+    padding:    30px 0;
+    overflow-x: scroll;
+    width: 100%;
+}
+
+.case-photo{
+    margin: 3px;
+    position: relative;
+}
+
+.case-photo img{
+    max-width: 320px;
+}
+
+.case-photo .content-title {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .6);
+    z-index: 0;
+}
+
+.case-photo h2 {
+    position: absolute;
+    top: 30%;
+    right: 20px;
+    left: 20px;
+    color: #ffffff;
+    font-size: 90%;
+    text-shadow: rgb(0, 0, 0) 1px 0 10px;
+    z-index: 1;
+}
+
 /* --------------------------------------------------------------------------------------- */
 
 @media screen and (min-width: 1400px) {
@@ -371,6 +433,10 @@ a{
         margin: auto;
         margin-top: 200px;
         margin-bottom: 50px;
+    }
+    
+    .block-about {
+        width: 90%;
     }
 
     .content-carousel {
@@ -469,6 +535,10 @@ a{
         margin-bottom: 50px;
     }
     
+    .block-about {
+        width: 90%;
+    }
+    
     .content-carousel {
         margin-top: 140px;
     }
@@ -561,6 +631,10 @@ a{
         margin: auto;
         margin-top: 200px;
         margin-bottom: 50px;
+    }
+    
+    .block-about {
+        width: 90%;
     }
     
     .content-carousel {
